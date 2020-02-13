@@ -1,0 +1,37 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: >
+  Example that demonstrates local code paths and the use of `aws cloudformation package`.
+
+Resources:
+  Lambda:
+    Type: AWS::Lambda::Function
+    Properties:
+      Handler: example.lambda_handler
+      Runtime: python3.7
+      Role: !GetAtt LambdaRole.Arn
+      Code: ./package
+    DependsOn: LambdaRole
+
+  LambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument: 
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      # Policies:
+      #   - PolicyName: !Sub '${AWS::StackName}-'
+      #     PolicyDocument:
+      #       Version: 2012-10-17
+      #       Statement:
+      #         - Effect: Allow
+      #           Action:
+      #             - s3:*
+      #           Resource: "*"

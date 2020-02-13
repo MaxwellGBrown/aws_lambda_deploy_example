@@ -1,0 +1,5 @@
+package/*
+*.pyc
+__pycache__/*
+
+packaged_template.yaml
